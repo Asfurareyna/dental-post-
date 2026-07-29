@@ -291,7 +291,8 @@ async function generateVideo(fields) {
       return;
     }
 
-    document.getElementById('video-script-text').textContent = data.script;
+    const scriptText = data.script || '(Script not available)';
+    document.getElementById('video-script-text').textContent = scriptText;
     document.getElementById('video-script-box').classList.remove('hidden');
     document.getElementById('video-status-text').textContent = 'Video is processing... checking every 15 seconds.';
 

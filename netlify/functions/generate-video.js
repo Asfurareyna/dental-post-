@@ -146,9 +146,12 @@ exports.handler = async function (event) {
     };
   }
 
+  console.log('Script generated:', script ? script.substring(0, 80) : 'EMPTY');
+  console.log('Video ID:', videoId);
+
   return {
     statusCode: 200,
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ video_id: videoId, script }),
+    body: JSON.stringify({ video_id: videoId, script: script || '' }),
   };
 };
