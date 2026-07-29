@@ -44,7 +44,7 @@ function switchAuth(mode) {
   document.getElementById('auth-login').classList.add('hidden');
   document.getElementById('auth-signup').classList.add('hidden');
   document.getElementById(`auth-${mode}`).classList.remove('hidden');
-  event.target.classList.add('active');
+  document.querySelector(`.auth-tab[onclick="switchAuth('${mode}')"]`).classList.add('active');
 }
 
 async function logIn() {
