@@ -1,25 +1,61 @@
+const https = require('https');
+
+function httpsPost(options, body) {
+  return new Promise((resolve, reject) => {
+    const req = https.request(options, (res) => {
+      let data = '';
+      res.on('data', (chunk) => { data += chunk; });
+      res.on('end', () => resolve({ status: res.statusCode, body: data }));
+    });
+    req.on('error', reject);
+    req.write(body);
+    req.end();
+  });
+}
+
 exports.handler = async function (event) {
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method Not Allowed' };
   }
 
+  const apiKey = process.env.OPENAI_API_KEY;
+  if (!apiKey) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: 'OPENAI_API_KEY is not set in Netlify environment variables.' }),
+    };
+  }
+
   const fields = JSON.parse(event.body);
   const prompt = buildPrompt(fields);
 
-  const response = await fetch('https://api.openai.com/v1/chat/completions', {
+  const payload = JSON.stringify({
+    model: 'gpt-4o-mini',
+    messages: [{ role: 'user', content: prompt }],
+    max_tokens: 1200,
+  });
+
+  const options = {
+    hostname: 'api.openai.com',
+    path: '/v1/chat/completions',
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+      'Authorization': `Bearer ${apiKey}`,
+      'Content-Length': Buffer.byteLength(payload),
     },
-    body: JSON.stringify({
-      model: 'gpt-4o-mini',
-      messages: [{ role: 'user', content: prompt }],
-      max_tokens: 1200,
-    }),
-  });
+  };
 
-  const data = await response.json();
+  const response = await httpsPost(options, payload);
+  const data = JSON.parse(response.body);
+
+  if (!data.choices || !data.choices[0]) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: data.error ? data.error.message : 'Unexpected response from OpenAI.' }),
+    };
+  }
+
   const result = data.choices[0].message.content;
 
   return {

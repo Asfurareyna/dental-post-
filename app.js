@@ -66,6 +66,11 @@ async function generateContent() {
     });
 
     const data = await response.json();
+    if (data.error) {
+      alert('Error: ' + data.error);
+      resetForm();
+      return;
+    }
     displayResults(data.result);
   } catch (err) {
     alert('Something went wrong. Please try again.');
