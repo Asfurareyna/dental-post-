@@ -10,242 +10,298 @@
 
   <header>
     <h1>DentalPost</h1>
-    <p>AI-powered social media content for dental offices</p>
+    <p id="header-sub">AI-powered social media content for dental offices</p>
+    <nav id="app-nav" class="hidden">
+      <button class="nav-btn active" onclick="showTab('generator')">Generator</button>
+      <button class="nav-btn" onclick="showTab('saved')">My Saved Content</button>
+      <button class="nav-btn signout" onclick="signOut()">Sign Out</button>
+    </nav>
   </header>
 
   <main>
-    <section class="card">
-      <h2>What would you like to create?</h2>
 
-      <div class="form-group">
-        <label for="content-type">Content Type</label>
-        <select id="content-type" onchange="showFields()">
-          <option value="">— Select a type —</option>
-          <option value="before-after">Before &amp; After Caption</option>
-          <option value="educational">Educational Post</option>
-          <option value="promotional">Promotional Post</option>
-          <option value="seasonal">Seasonal Content</option>
-          <option value="video">Educational Video (AI Avatar)</option>
-        </select>
-      </div>
+    <!-- AUTH SCREEN -->
+    <section id="auth-screen">
+      <div class="card auth-card">
+        <div class="auth-tabs">
+          <button class="auth-tab active" onclick="switchAuth('login')">Log In</button>
+          <button class="auth-tab" onclick="switchAuth('signup')">Sign Up</button>
+        </div>
 
-      <!-- Before & After -->
-      <div id="fields-before-after" class="field-group hidden">
-        <div class="form-group">
-          <label for="procedure">Procedure Type</label>
-          <select id="procedure">
-            <option value="">— Select —</option>
-            <option>Implant Restoration</option>
-            <option>Veneers</option>
-            <option>Teeth Whitening</option>
-            <option>Invisalign</option>
-            <option>Braces</option>
-            <option>Dental Bonding</option>
-            <option>Crown</option>
-            <option>Other</option>
-          </select>
+        <div id="auth-login">
+          <div class="form-group">
+            <label for="login-email">Email</label>
+            <input type="email" id="login-email" placeholder="you@example.com" />
+          </div>
+          <div class="form-group">
+            <label for="login-password">Password</label>
+            <input type="password" id="login-password" placeholder="Your password" />
+          </div>
+          <p id="login-error" class="auth-error hidden"></p>
+          <button onclick="logIn()">Log In</button>
         </div>
-        <div class="form-group">
-          <label for="ba-tone">Tone</label>
-          <select id="ba-tone">
-            <option>Professional &amp; Welcoming</option>
-            <option>Warm &amp; Personal</option>
-            <option>Friendly &amp; Casual</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="ba-focus">What made this result special?</label>
-          <textarea id="ba-focus" placeholder="e.g. Really improved the patient's quality of life and confidence"></textarea>
+
+        <div id="auth-signup" class="hidden">
+          <div class="form-group">
+            <label for="signup-email">Email</label>
+            <input type="email" id="signup-email" placeholder="you@example.com" />
+          </div>
+          <div class="form-group">
+            <label for="signup-password">Password</label>
+            <input type="password" id="signup-password" placeholder="At least 6 characters" />
+          </div>
+          <p id="signup-error" class="auth-error hidden"></p>
+          <p id="signup-success" class="auth-success hidden">Account created! Check your email to confirm.</p>
+          <button onclick="signUp()">Create Account</button>
         </div>
       </div>
-
-      <!-- Educational -->
-      <div id="fields-educational" class="field-group hidden">
-        <div class="form-group">
-          <label for="edu-topic">Topic</label>
-          <select id="edu-topic">
-            <option value="">— Select —</option>
-            <option>Flossing</option>
-            <option>Fluoride</option>
-            <option>Gum Disease</option>
-            <option>Teeth Grinding</option>
-            <option>Teeth Whitening</option>
-            <option>Dental Implants</option>
-            <option>Children's Dental Health</option>
-            <option>Invisalign</option>
-            <option>Root Canal Myths</option>
-            <option>Oral Cancer Awareness</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="edu-tone">Tone</label>
-          <select id="edu-tone">
-            <option>Professional &amp; Informative</option>
-            <option>Friendly &amp; Approachable</option>
-            <option>Fun &amp; Casual</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="edu-format">Post Format</label>
-          <select id="edu-format">
-            <option>Fact-based</option>
-            <option>Myth vs. Truth</option>
-            <option>Tips List</option>
-            <option>Q&amp;A</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- Promotional -->
-      <div id="fields-promotional" class="field-group hidden">
-        <div class="form-group">
-          <label for="promo-type">Promotion Type</label>
-          <select id="promo-type">
-            <option value="">— Select —</option>
-            <option>Teeth Whitening Special</option>
-            <option>Invisalign Offer</option>
-            <option>New Patient Special</option>
-            <option>Free Consultation</option>
-            <option>Seasonal Promotion</option>
-            <option>Other</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="promo-details">Offer Details</label>
-          <textarea id="promo-details" placeholder="e.g. $99 whitening through December 31st"></textarea>
-        </div>
-        <div class="form-group">
-          <label for="promo-tone">Tone</label>
-          <select id="promo-tone">
-            <option>Professional &amp; Trustworthy</option>
-            <option>Excited &amp; Energetic</option>
-            <option>Warm &amp; Inviting</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="promo-urgency">Urgency</label>
-          <select id="promo-urgency">
-            <option>Low — ongoing offer</option>
-            <option>Medium — limited time</option>
-            <option>High — ending soon</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- Seasonal -->
-      <div id="fields-seasonal" class="field-group hidden">
-        <div class="form-group">
-          <label for="season">Month or Holiday</label>
-          <select id="season">
-            <option value="">— Select —</option>
-            <option>January — New Year</option>
-            <option>February — Valentine's Day</option>
-            <option>March — Spring</option>
-            <option>April — Oral Health Month</option>
-            <option>May — Mother's Day</option>
-            <option>June — Summer</option>
-            <option>July — Independence Day</option>
-            <option>August — Back to School</option>
-            <option>September — Fall</option>
-            <option>October — Halloween</option>
-            <option>November — Thanksgiving</option>
-            <option>December — Holidays</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="season-angle">Content Angle</label>
-          <select id="season-angle">
-            <option>Holiday tie-in</option>
-            <option>Health reminder</option>
-            <option>Fun &amp; festive</option>
-            <option>Awareness month</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="season-tone">Tone</label>
-          <select id="season-tone">
-            <option>Warm &amp; Friendly</option>
-            <option>Festive &amp; Fun</option>
-            <option>Informational</option>
-          </select>
-        </div>
-      </div>
-
-      <!-- Video -->
-      <div id="fields-video" class="field-group hidden">
-        <div class="form-group">
-          <label for="video-topic">Procedure or Topic</label>
-          <select id="video-topic">
-            <option value="">— Select —</option>
-            <option>Dental Implants</option>
-            <option>Teeth Whitening</option>
-            <option>Invisalign</option>
-            <option>Root Canal</option>
-            <option>Veneers</option>
-            <option>Dental Crowns</option>
-            <option>Gum Disease Treatment</option>
-            <option>Children's Dental Care</option>
-            <option>Dental Cleaning</option>
-            <option>Tooth Extraction</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="video-duration">Video Length</label>
-          <select id="video-duration">
-            <option value="30s">30 seconds</option>
-            <option value="60s">60 seconds</option>
-            <option value="2min">2 minutes</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label for="video-tone">Tone</label>
-          <select id="video-tone">
-            <option>Professional &amp; Reassuring</option>
-            <option>Friendly &amp; Approachable</option>
-            <option>Educational &amp; Informative</option>
-          </select>
-        </div>
-        <p class="video-note">Your video will be created with an AI presenter. This takes about 2 minutes to process.</p>
-      </div>
-
-      <button id="generate-btn" class="hidden" onclick="generateContent()">
-        Generate Captions
-      </button>
     </section>
 
-    <!-- Results -->
-    <section id="results" class="hidden">
-      <h2>Your 3 Caption Options</h2>
-      <p class="subtitle">Click any caption to copy it.</p>
-      <div id="captions-container"></div>
-      <button class="secondary" onclick="resetForm()">Generate Again</button>
-    </section>
+    <!-- GENERATOR TAB -->
+    <section id="tab-generator" class="hidden">
 
-    <!-- Video Results -->
-    <section id="video-results" class="hidden">
-      <h2>Your Educational Video</h2>
-      <div id="video-status-box">
+      <div class="card">
+        <h2>What would you like to create?</h2>
+
+        <div class="form-group">
+          <label for="content-type">Content Type</label>
+          <select id="content-type" onchange="showFields()">
+            <option value="">— Select a type —</option>
+            <option value="before-after">Before &amp; After Caption</option>
+            <option value="educational">Educational Post</option>
+            <option value="promotional">Promotional Post</option>
+            <option value="seasonal">Seasonal Content</option>
+            <option value="video">Educational Video (AI Avatar)</option>
+          </select>
+        </div>
+
+        <!-- Before & After -->
+        <div id="fields-before-after" class="field-group hidden">
+          <div class="form-group">
+            <label for="procedure">Procedure Type</label>
+            <select id="procedure">
+              <option value="">— Select —</option>
+              <option>Implant Restoration</option>
+              <option>Veneers</option>
+              <option>Teeth Whitening</option>
+              <option>Invisalign</option>
+              <option>Braces</option>
+              <option>Dental Bonding</option>
+              <option>Crown</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="ba-tone">Tone</label>
+            <select id="ba-tone">
+              <option>Professional &amp; Welcoming</option>
+              <option>Warm &amp; Personal</option>
+              <option>Friendly &amp; Casual</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="ba-focus">What made this result special?</label>
+            <textarea id="ba-focus" placeholder="e.g. Really improved the patient's quality of life and confidence"></textarea>
+          </div>
+        </div>
+
+        <!-- Educational -->
+        <div id="fields-educational" class="field-group hidden">
+          <div class="form-group">
+            <label for="edu-topic">Topic</label>
+            <select id="edu-topic">
+              <option value="">— Select —</option>
+              <option>Flossing</option>
+              <option>Fluoride</option>
+              <option>Gum Disease</option>
+              <option>Teeth Grinding</option>
+              <option>Teeth Whitening</option>
+              <option>Dental Implants</option>
+              <option>Children's Dental Health</option>
+              <option>Invisalign</option>
+              <option>Root Canal Myths</option>
+              <option>Oral Cancer Awareness</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="edu-tone">Tone</label>
+            <select id="edu-tone">
+              <option>Professional &amp; Informative</option>
+              <option>Friendly &amp; Approachable</option>
+              <option>Fun &amp; Casual</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="edu-format">Post Format</label>
+            <select id="edu-format">
+              <option>Fact-based</option>
+              <option>Myth vs. Truth</option>
+              <option>Tips List</option>
+              <option>Q&amp;A</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Promotional -->
+        <div id="fields-promotional" class="field-group hidden">
+          <div class="form-group">
+            <label for="promo-type">Promotion Type</label>
+            <select id="promo-type">
+              <option value="">— Select —</option>
+              <option>Teeth Whitening Special</option>
+              <option>Invisalign Offer</option>
+              <option>New Patient Special</option>
+              <option>Free Consultation</option>
+              <option>Seasonal Promotion</option>
+              <option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="promo-details">Offer Details</label>
+            <textarea id="promo-details" placeholder="e.g. $99 whitening through December 31st"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="promo-tone">Tone</label>
+            <select id="promo-tone">
+              <option>Professional &amp; Trustworthy</option>
+              <option>Excited &amp; Energetic</option>
+              <option>Warm &amp; Inviting</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="promo-urgency">Urgency</label>
+            <select id="promo-urgency">
+              <option>Low — ongoing offer</option>
+              <option>Medium — limited time</option>
+              <option>High — ending soon</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Seasonal -->
+        <div id="fields-seasonal" class="field-group hidden">
+          <div class="form-group">
+            <label for="season">Month or Holiday</label>
+            <select id="season">
+              <option value="">— Select —</option>
+              <option>January — New Year</option>
+              <option>February — Valentine's Day</option>
+              <option>March — Spring</option>
+              <option>April — Oral Health Month</option>
+              <option>May — Mother's Day</option>
+              <option>June — Summer</option>
+              <option>July — Independence Day</option>
+              <option>August — Back to School</option>
+              <option>September — Fall</option>
+              <option>October — Halloween</option>
+              <option>November — Thanksgiving</option>
+              <option>December — Holidays</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="season-angle">Content Angle</label>
+            <select id="season-angle">
+              <option>Holiday tie-in</option>
+              <option>Health reminder</option>
+              <option>Fun &amp; festive</option>
+              <option>Awareness month</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="season-tone">Tone</label>
+            <select id="season-tone">
+              <option>Warm &amp; Friendly</option>
+              <option>Festive &amp; Fun</option>
+              <option>Informational</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Video -->
+        <div id="fields-video" class="field-group hidden">
+          <div class="form-group">
+            <label for="video-topic">Procedure or Topic</label>
+            <select id="video-topic">
+              <option value="">— Select —</option>
+              <option>Dental Implants</option>
+              <option>Teeth Whitening</option>
+              <option>Invisalign</option>
+              <option>Root Canal</option>
+              <option>Veneers</option>
+              <option>Dental Crowns</option>
+              <option>Gum Disease Treatment</option>
+              <option>Children's Dental Care</option>
+              <option>Dental Cleaning</option>
+              <option>Tooth Extraction</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="video-duration">Video Length</label>
+            <select id="video-duration">
+              <option value="30s">30 seconds</option>
+              <option value="60s">60 seconds</option>
+              <option value="2min">2 minutes</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="video-tone">Tone</label>
+            <select id="video-tone">
+              <option>Professional &amp; Reassuring</option>
+              <option>Friendly &amp; Approachable</option>
+              <option>Educational &amp; Informative</option>
+            </select>
+          </div>
+          <p class="video-note">Your video will be created with an AI presenter. This takes about 2 minutes to process.</p>
+        </div>
+
+        <button id="generate-btn" class="hidden" onclick="generateContent()">Generate Captions</button>
+      </div>
+
+      <!-- Caption Results -->
+      <section id="results" class="hidden">
+        <h2>Your 3 Caption Options</h2>
+        <p class="subtitle">Click any caption to copy it. Use the Save button to keep it in your profile.</p>
+        <div id="captions-container"></div>
+        <button class="secondary" onclick="resetForm()">Generate Again</button>
+      </section>
+
+      <!-- Video Results -->
+      <section id="video-results" class="hidden">
+        <h2>Your Educational Video</h2>
+        <div id="video-status-box">
+          <div class="spinner"></div>
+          <p id="video-status-text">Creating your video... this takes about 2 minutes.</p>
+        </div>
+        <div id="video-script-box" class="hidden">
+          <h3>Generated Script</h3>
+          <p id="video-script-text"></p>
+        </div>
+        <div id="video-player-box" class="hidden">
+          <video id="video-player" controls style="width:100%;border-radius:10px;"></video>
+          <a id="video-download" href="#" download class="download-btn">Download Video</a>
+        </div>
+        <button class="secondary" onclick="resetForm()">Create Another</button>
+      </section>
+
+      <div id="loading" class="hidden">
         <div class="spinner"></div>
-        <p id="video-status-text">Creating your video... this takes about 2 minutes.</p>
+        <p>Generating your captions...</p>
       </div>
-      <div id="video-script-box" class="hidden">
-        <h3>Generated Script</h3>
-        <p id="video-script-text"></p>
-      </div>
-      <div id="video-player-box" class="hidden">
-        <video id="video-player" controls style="width:100%;border-radius:10px;"></video>
-        <a id="video-download" href="#" download class="download-btn">Download Video</a>
-      </div>
-      <button class="secondary" onclick="resetForm()">Create Another</button>
+
     </section>
 
-    <div id="loading" class="hidden">
-      <div class="spinner"></div>
-      <p>Generating your captions...</p>
-    </div>
+    <!-- SAVED CONTENT TAB -->
+    <section id="tab-saved" class="hidden">
+      <div class="card">
+        <h2>My Saved Content</h2>
+        <p class="subtitle" id="saved-subtitle">Content you save will appear here.</p>
+        <div id="saved-container"></div>
+      </div>
+    </section>
 
   </main>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="app.js"></script>
 </body>
 </html>
