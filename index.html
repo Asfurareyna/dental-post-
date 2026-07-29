@@ -3,303 +3,398 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>DentalPost — AI Content Generator</title>
+  <title>DentalPost — AI Social Content for Dental Offices</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <header>
-    <h1>DentalPost</h1>
-    <p id="header-sub">AI-powered social media content for dental offices</p>
-    <nav id="app-nav" class="hidden">
-      <button class="nav-btn active" onclick="showTab('generator')">Generator</button>
-      <button class="nav-btn" onclick="showTab('saved')">My Saved Content</button>
-      <button class="nav-btn signout" onclick="signOut()">Sign Out</button>
+  <!-- ── LANDING ── -->
+  <div id="landing">
+
+    <nav class="site-nav">
+      <a class="nav-logo" href="#">Dental<span>Post</span></a>
+      <div class="nav-actions">
+        <button class="btn-ghost" onclick="openAuthModal('login')">Log In</button>
+        <button class="btn-coral" onclick="openAuthModal('signup')">Get Started Free</button>
+      </div>
     </nav>
-  </header>
 
-  <main>
-
-    <!-- AUTH SCREEN -->
-    <section id="auth-screen">
-      <div class="card auth-card">
-        <div class="auth-tabs">
-          <button class="auth-tab active" onclick="switchAuth('login', this)">Log In</button>
-          <button class="auth-tab" onclick="switchAuth('signup', this)">Sign Up</button>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-inner">
+        <p class="hero-eyebrow">AI content for dental offices</p>
+        <h1 class="hero-headline">Your patients scroll.<br>Make them <em>stop</em>.</h1>
+        <p class="hero-sub">Generate professional Instagram captions, promotional posts, seasonal content, and educational videos — in seconds. Built for dental teams, not marketers.</p>
+        <div class="hero-actions">
+          <button class="btn-coral btn-lg" onclick="openAuthModal('signup')">Start for Free</button>
+          <button class="btn-outline btn-lg" onclick="openAuthModal('login')">Already a member? Log in</button>
         </div>
-
-        <div id="auth-login">
-          <div class="form-group">
-            <label for="login-email">Email</label>
-            <input type="email" id="login-email" placeholder="you@example.com" />
-          </div>
-          <div class="form-group">
-            <label for="login-password">Password</label>
-            <input type="password" id="login-password" placeholder="Your password" />
-          </div>
-          <p id="login-error" class="auth-error hidden"></p>
-          <button onclick="logIn()">Log In</button>
-        </div>
-
-        <div id="auth-signup" class="hidden">
-          <div class="form-group">
-            <label for="signup-email">Email</label>
-            <input type="email" id="signup-email" placeholder="you@example.com" />
-          </div>
-          <div class="form-group">
-            <label for="signup-password">Password</label>
-            <input type="password" id="signup-password" placeholder="At least 6 characters" />
-          </div>
-          <p id="signup-error" class="auth-error hidden"></p>
-          <p id="signup-success" class="auth-success hidden">Account created! Check your email to confirm.</p>
-          <button onclick="signUp()">Create Account</button>
+        <p class="hero-note">No credit card required to start.</p>
+      </div>
+      <div class="hero-preview">
+        <div class="preview-card">
+          <div class="preview-label">Before &amp; After — Implant Restoration</div>
+          <div class="preview-body">"Smiling confidently, eating without discomfort, living life to the fullest — that's what dental implants made possible for this patient. After years of struggling, they now have a fully restored smile that feels completely natural. Ready to reclaim your quality of life? Book a consultation today. ✨<br><br>#DentalImplants #SmileRestoration #BeforeAndAfter"</div>
+          <div class="preview-tag">Generated in 4 seconds</div>
         </div>
       </div>
     </section>
 
-    <!-- GENERATOR TAB -->
-    <section id="tab-generator" class="hidden">
+    <!-- FEATURES -->
+    <section class="features">
+      <div class="section-inner">
+        <p class="section-eyebrow">What you get</p>
+        <h2 class="section-headline">Everything your office needs to show up online</h2>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">✦</div>
+            <h3>Before &amp; After Captions</h3>
+            <p>Pick the procedure, set the tone, describe the result. Get 3 professional caption options with hashtags, ready to copy and post.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">✦</div>
+            <h3>Educational Posts</h3>
+            <p>Turn complex dental topics into clear, engaging social posts. Fact-based, myth-busting, Q&amp;A — you pick the format.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">✦</div>
+            <h3>Promos &amp; Specials</h3>
+            <p>Whitening deals, Invisalign offers, new patient specials. Write it once, get 3 versions tuned to your urgency level.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">✦</div>
+            <h3>Seasonal Content</h3>
+            <p>Back to school, Halloween candy reminders, New Year checkups. Relevant content for every month of the year.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">✦</div>
+            <h3>AI Educational Videos</h3>
+            <p>Generate a professional video script and create an AI avatar video — no camera, no crew, no editing required.</p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">✦</div>
+            <h3>Saved Content Library</h3>
+            <p>Save your best captions to your profile. Build a content library your whole team can pull from anytime.</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-      <div class="card">
-        <h2>What would you like to create?</h2>
+    <!-- TESTIMONIALS -->
+    <section class="testimonials">
+      <div class="section-inner">
+        <p class="section-eyebrow light">From dental teams like yours</p>
+        <h2 class="section-headline light">Real offices. Real results.</h2>
+        <div class="testimonials-grid">
+          <div class="testimonial-card">
+            <p class="testimonial-quote">"We used to spend hours every week trying to come up with captions. DentalPost cut that down to minutes. Our Instagram engagement went up 40% in the first month."</p>
+            <div class="testimonial-author">
+              <div class="author-avatar">SM</div>
+              <div>
+                <div class="author-name">Sarah M.</div>
+                <div class="author-role">Office Manager · Bright Smile Dental</div>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-card">
+            <p class="testimonial-quote">"The before-and-after captions are incredible. They sound professional and really highlight what we do. My patients have started commenting on our posts more than ever before."</p>
+            <div class="testimonial-author">
+              <div class="author-avatar">CR</div>
+              <div>
+                <div class="author-name">Carlos R.</div>
+                <div class="author-role">Marketing Coordinator · Family Dental Care</div>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-card">
+            <p class="testimonial-quote">"I was skeptical about AI writing our posts. But the content actually sounds like us — not generic. It's saved me at least 3 hours a week. Worth every penny."</p>
+            <div class="testimonial-author">
+              <div class="author-avatar">DV</div>
+              <div>
+                <div class="author-name">Daniela V.</div>
+                <div class="author-role">Practice Administrator · Palm Beach Dental Group</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
+    <!-- BOTTOM CTA -->
+    <section class="bottom-cta">
+      <div class="section-inner center">
+        <h2 class="section-headline">Ready to fill your content calendar?</h2>
+        <p class="bottom-cta-sub">Join dental offices that are posting consistently, professionally, and without the stress.</p>
+        <button class="btn-coral btn-lg" onclick="openAuthModal('signup')">Create Your Free Account</button>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <span>© 2026 DentalPost</span>
+      <span>Built for dental teams</span>
+    </footer>
+
+  </div>
+
+  <!-- ── AUTH MODAL ── -->
+  <div id="auth-modal" class="modal-overlay hidden" onclick="handleOverlayClick(event)">
+    <div class="modal-card">
+      <button class="modal-close" onclick="closeAuthModal()">✕</button>
+      <div class="auth-tabs">
+        <button class="auth-tab active" onclick="switchAuth('login', this)">Log In</button>
+        <button class="auth-tab" onclick="switchAuth('signup', this)">Sign Up</button>
+      </div>
+
+      <div id="auth-login">
         <div class="form-group">
-          <label for="content-type">Content Type</label>
-          <select id="content-type" onchange="showFields()">
-            <option value="">— Select a type —</option>
-            <option value="before-after">Before &amp; After Caption</option>
-            <option value="educational">Educational Post</option>
-            <option value="promotional">Promotional Post</option>
-            <option value="seasonal">Seasonal Content</option>
-            <option value="video">Educational Video (AI Avatar)</option>
-          </select>
+          <label for="login-email">Email</label>
+          <input type="email" id="login-email" placeholder="you@example.com" />
         </div>
-
-        <!-- Before & After -->
-        <div id="fields-before-after" class="field-group hidden">
-          <div class="form-group">
-            <label for="procedure">Procedure Type</label>
-            <select id="procedure">
-              <option value="">— Select —</option>
-              <option>Implant Restoration</option>
-              <option>Veneers</option>
-              <option>Teeth Whitening</option>
-              <option>Invisalign</option>
-              <option>Braces</option>
-              <option>Dental Bonding</option>
-              <option>Crown</option>
-              <option>Other</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="ba-tone">Tone</label>
-            <select id="ba-tone">
-              <option>Professional &amp; Welcoming</option>
-              <option>Warm &amp; Personal</option>
-              <option>Friendly &amp; Casual</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="ba-focus">What made this result special?</label>
-            <textarea id="ba-focus" placeholder="e.g. Really improved the patient's quality of life and confidence"></textarea>
-          </div>
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" placeholder="Your password" />
         </div>
-
-        <!-- Educational -->
-        <div id="fields-educational" class="field-group hidden">
-          <div class="form-group">
-            <label for="edu-topic">Topic</label>
-            <select id="edu-topic">
-              <option value="">— Select —</option>
-              <option>Flossing</option>
-              <option>Fluoride</option>
-              <option>Gum Disease</option>
-              <option>Teeth Grinding</option>
-              <option>Teeth Whitening</option>
-              <option>Dental Implants</option>
-              <option>Children's Dental Health</option>
-              <option>Invisalign</option>
-              <option>Root Canal Myths</option>
-              <option>Oral Cancer Awareness</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="edu-tone">Tone</label>
-            <select id="edu-tone">
-              <option>Professional &amp; Informative</option>
-              <option>Friendly &amp; Approachable</option>
-              <option>Fun &amp; Casual</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="edu-format">Post Format</label>
-            <select id="edu-format">
-              <option>Fact-based</option>
-              <option>Myth vs. Truth</option>
-              <option>Tips List</option>
-              <option>Q&amp;A</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- Promotional -->
-        <div id="fields-promotional" class="field-group hidden">
-          <div class="form-group">
-            <label for="promo-type">Promotion Type</label>
-            <select id="promo-type">
-              <option value="">— Select —</option>
-              <option>Teeth Whitening Special</option>
-              <option>Invisalign Offer</option>
-              <option>New Patient Special</option>
-              <option>Free Consultation</option>
-              <option>Seasonal Promotion</option>
-              <option>Other</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="promo-details">Offer Details</label>
-            <textarea id="promo-details" placeholder="e.g. $99 whitening through December 31st"></textarea>
-          </div>
-          <div class="form-group">
-            <label for="promo-tone">Tone</label>
-            <select id="promo-tone">
-              <option>Professional &amp; Trustworthy</option>
-              <option>Excited &amp; Energetic</option>
-              <option>Warm &amp; Inviting</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="promo-urgency">Urgency</label>
-            <select id="promo-urgency">
-              <option>Low — ongoing offer</option>
-              <option>Medium — limited time</option>
-              <option>High — ending soon</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- Seasonal -->
-        <div id="fields-seasonal" class="field-group hidden">
-          <div class="form-group">
-            <label for="season">Month or Holiday</label>
-            <select id="season">
-              <option value="">— Select —</option>
-              <option>January — New Year</option>
-              <option>February — Valentine's Day</option>
-              <option>March — Spring</option>
-              <option>April — Oral Health Month</option>
-              <option>May — Mother's Day</option>
-              <option>June — Summer</option>
-              <option>July — Independence Day</option>
-              <option>August — Back to School</option>
-              <option>September — Fall</option>
-              <option>October — Halloween</option>
-              <option>November — Thanksgiving</option>
-              <option>December — Holidays</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="season-angle">Content Angle</label>
-            <select id="season-angle">
-              <option>Holiday tie-in</option>
-              <option>Health reminder</option>
-              <option>Fun &amp; festive</option>
-              <option>Awareness month</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="season-tone">Tone</label>
-            <select id="season-tone">
-              <option>Warm &amp; Friendly</option>
-              <option>Festive &amp; Fun</option>
-              <option>Informational</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- Video -->
-        <div id="fields-video" class="field-group hidden">
-          <div class="form-group">
-            <label for="video-topic">Procedure or Topic</label>
-            <select id="video-topic">
-              <option value="">— Select —</option>
-              <option>Dental Implants</option>
-              <option>Teeth Whitening</option>
-              <option>Invisalign</option>
-              <option>Root Canal</option>
-              <option>Veneers</option>
-              <option>Dental Crowns</option>
-              <option>Gum Disease Treatment</option>
-              <option>Children's Dental Care</option>
-              <option>Dental Cleaning</option>
-              <option>Tooth Extraction</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="video-duration">Video Length</label>
-            <select id="video-duration">
-              <option value="30s">30 seconds</option>
-              <option value="60s">60 seconds</option>
-              <option value="2min">2 minutes</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="video-tone">Tone</label>
-            <select id="video-tone">
-              <option>Professional &amp; Reassuring</option>
-              <option>Friendly &amp; Approachable</option>
-              <option>Educational &amp; Informative</option>
-            </select>
-          </div>
-          <p class="video-note">Your video will be created with an AI presenter. This takes about 2 minutes to process.</p>
-        </div>
-
-        <button id="generate-btn" class="hidden" onclick="generateContent()">Generate Captions</button>
+        <p id="login-error" class="auth-error hidden"></p>
+        <button class="btn-coral btn-full" onclick="logIn()">Log In</button>
       </div>
 
-      <!-- Caption Results -->
-      <section id="results" class="hidden">
-        <h2>Your 3 Caption Options</h2>
-        <p class="subtitle">Click any caption to copy it. Use the Save button to keep it in your profile.</p>
-        <div id="captions-container"></div>
-        <button class="secondary" onclick="resetForm()">Generate Again</button>
-      </section>
+      <div id="auth-signup" class="hidden">
+        <div class="form-group">
+          <label for="signup-email">Email</label>
+          <input type="email" id="signup-email" placeholder="you@example.com" />
+        </div>
+        <div class="form-group">
+          <label for="signup-password">Password</label>
+          <input type="password" id="signup-password" placeholder="At least 6 characters" />
+        </div>
+        <p id="signup-error" class="auth-error hidden"></p>
+        <p id="signup-success" class="auth-success hidden">Account created! Check your email to confirm, then log in.</p>
+        <button class="btn-coral btn-full" onclick="signUp()">Create Account</button>
+      </div>
+    </div>
+  </div>
 
-      <!-- Video Results -->
-      <section id="video-results" class="hidden">
-        <h2>Your Educational Video</h2>
-        <div id="video-status-box">
+  <!-- ── APP ── -->
+  <div id="app" class="hidden">
+
+    <header class="app-header">
+      <a class="nav-logo" href="#">Dental<span>Post</span></a>
+      <nav id="app-nav">
+        <button class="nav-btn active" onclick="showTab('generator')">Generator</button>
+        <button class="nav-btn" onclick="showTab('saved')">My Saved Content</button>
+        <button class="nav-btn signout" onclick="signOut()">Sign Out</button>
+      </nav>
+    </header>
+
+    <main class="app-main">
+
+      <!-- GENERATOR TAB -->
+      <section id="tab-generator">
+        <div class="card">
+          <h2>What would you like to create?</h2>
+          <div class="form-group">
+            <label for="content-type">Content Type</label>
+            <select id="content-type" onchange="showFields()">
+              <option value="">— Select a type —</option>
+              <option value="before-after">Before &amp; After Caption</option>
+              <option value="educational">Educational Post</option>
+              <option value="promotional">Promotional Post</option>
+              <option value="seasonal">Seasonal Content</option>
+              <option value="video">Educational Video (AI Avatar)</option>
+            </select>
+          </div>
+
+          <div id="fields-before-after" class="field-group hidden">
+            <div class="form-group">
+              <label for="procedure">Procedure Type</label>
+              <select id="procedure">
+                <option value="">— Select —</option>
+                <option>Implant Restoration</option><option>Veneers</option>
+                <option>Teeth Whitening</option><option>Invisalign</option>
+                <option>Braces</option><option>Dental Bonding</option>
+                <option>Crown</option><option>Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="ba-tone">Tone</label>
+              <select id="ba-tone">
+                <option>Professional &amp; Welcoming</option>
+                <option>Warm &amp; Personal</option>
+                <option>Friendly &amp; Casual</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="ba-focus">What made this result special?</label>
+              <textarea id="ba-focus" placeholder="e.g. Really improved the patient's quality of life and confidence"></textarea>
+            </div>
+          </div>
+
+          <div id="fields-educational" class="field-group hidden">
+            <div class="form-group">
+              <label for="edu-topic">Topic</label>
+              <select id="edu-topic">
+                <option value="">— Select —</option>
+                <option>Flossing</option><option>Fluoride</option>
+                <option>Gum Disease</option><option>Teeth Grinding</option>
+                <option>Teeth Whitening</option><option>Dental Implants</option>
+                <option>Children's Dental Health</option><option>Invisalign</option>
+                <option>Root Canal Myths</option><option>Oral Cancer Awareness</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="edu-tone">Tone</label>
+              <select id="edu-tone">
+                <option>Professional &amp; Informative</option>
+                <option>Friendly &amp; Approachable</option>
+                <option>Fun &amp; Casual</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="edu-format">Post Format</label>
+              <select id="edu-format">
+                <option>Fact-based</option><option>Myth vs. Truth</option>
+                <option>Tips List</option><option>Q&amp;A</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="fields-promotional" class="field-group hidden">
+            <div class="form-group">
+              <label for="promo-type">Promotion Type</label>
+              <select id="promo-type">
+                <option value="">— Select —</option>
+                <option>Teeth Whitening Special</option><option>Invisalign Offer</option>
+                <option>New Patient Special</option><option>Free Consultation</option>
+                <option>Seasonal Promotion</option><option>Other</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="promo-details">Offer Details</label>
+              <textarea id="promo-details" placeholder="e.g. $99 whitening through December 31st"></textarea>
+            </div>
+            <div class="form-group">
+              <label for="promo-tone">Tone</label>
+              <select id="promo-tone">
+                <option>Professional &amp; Trustworthy</option>
+                <option>Excited &amp; Energetic</option>
+                <option>Warm &amp; Inviting</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="promo-urgency">Urgency</label>
+              <select id="promo-urgency">
+                <option>Low — ongoing offer</option>
+                <option>Medium — limited time</option>
+                <option>High — ending soon</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="fields-seasonal" class="field-group hidden">
+            <div class="form-group">
+              <label for="season">Month or Holiday</label>
+              <select id="season">
+                <option value="">— Select —</option>
+                <option>January — New Year</option><option>February — Valentine's Day</option>
+                <option>March — Spring</option><option>April — Oral Health Month</option>
+                <option>May — Mother's Day</option><option>June — Summer</option>
+                <option>July — Independence Day</option><option>August — Back to School</option>
+                <option>September — Fall</option><option>October — Halloween</option>
+                <option>November — Thanksgiving</option><option>December — Holidays</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="season-angle">Content Angle</label>
+              <select id="season-angle">
+                <option>Holiday tie-in</option><option>Health reminder</option>
+                <option>Fun &amp; festive</option><option>Awareness month</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="season-tone">Tone</label>
+              <select id="season-tone">
+                <option>Warm &amp; Friendly</option>
+                <option>Festive &amp; Fun</option>
+                <option>Informational</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="fields-video" class="field-group hidden">
+            <div class="form-group">
+              <label for="video-topic">Procedure or Topic</label>
+              <select id="video-topic">
+                <option value="">— Select —</option>
+                <option>Dental Implants</option><option>Teeth Whitening</option>
+                <option>Invisalign</option><option>Root Canal</option>
+                <option>Veneers</option><option>Dental Crowns</option>
+                <option>Gum Disease Treatment</option><option>Children's Dental Care</option>
+                <option>Dental Cleaning</option><option>Tooth Extraction</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="video-duration">Video Length</label>
+              <select id="video-duration">
+                <option value="30s">30 seconds</option>
+                <option value="60s">60 seconds</option>
+                <option value="2min">2 minutes</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="video-tone">Tone</label>
+              <select id="video-tone">
+                <option>Professional &amp; Reassuring</option>
+                <option>Friendly &amp; Approachable</option>
+                <option>Educational &amp; Informative</option>
+              </select>
+            </div>
+            <p class="video-note">Your video will be created with an AI presenter. This takes about 2 minutes to process.</p>
+          </div>
+
+          <button id="generate-btn" class="btn-coral btn-full hidden" onclick="generateContent()">Generate Captions</button>
+        </div>
+
+        <section id="results" class="hidden">
+          <h2>Your 3 Caption Options</h2>
+          <p class="subtitle">Click any caption to copy it. Use Save to keep it in your profile.</p>
+          <div id="captions-container"></div>
+          <button class="btn-outline btn-full" onclick="resetForm()">Generate Again</button>
+        </section>
+
+        <section id="video-results" class="hidden">
+          <h2>Your Educational Video</h2>
+          <div id="video-status-box">
+            <div class="spinner"></div>
+            <p id="video-status-text">Creating your video... this takes about 2 minutes.</p>
+          </div>
+          <div id="video-script-box" class="hidden card">
+            <h3>Generated Script</h3>
+            <p id="video-script-text"></p>
+          </div>
+          <div id="video-player-box" class="hidden">
+            <video id="video-player" controls style="width:100%;border-radius:10px;"></video>
+            <a id="video-download" href="#" download class="download-btn">Download Video</a>
+          </div>
+          <button class="btn-outline btn-full" onclick="resetForm()">Create Another</button>
+        </section>
+
+        <div id="loading" class="hidden">
           <div class="spinner"></div>
-          <p id="video-status-text">Creating your video... this takes about 2 minutes.</p>
+          <p>Generating your captions...</p>
         </div>
-        <div id="video-script-box" class="hidden">
-          <h3>Generated Script</h3>
-          <p id="video-script-text"></p>
-        </div>
-        <div id="video-player-box" class="hidden">
-          <video id="video-player" controls style="width:100%;border-radius:10px;"></video>
-          <a id="video-download" href="#" download class="download-btn">Download Video</a>
-        </div>
-        <button class="secondary" onclick="resetForm()">Create Another</button>
       </section>
 
-      <div id="loading" class="hidden">
-        <div class="spinner"></div>
-        <p>Generating your captions...</p>
-      </div>
+      <!-- SAVED TAB -->
+      <section id="tab-saved" class="hidden">
+        <div class="card">
+          <h2>My Saved Content</h2>
+          <p class="subtitle" id="saved-subtitle">Content you save will appear here.</p>
+          <div id="saved-container"></div>
+        </div>
+      </section>
 
-    </section>
-
-    <!-- SAVED CONTENT TAB -->
-    <section id="tab-saved" class="hidden">
-      <div class="card">
-        <h2>My Saved Content</h2>
-        <p class="subtitle" id="saved-subtitle">Content you save will appear here.</p>
-        <div id="saved-container"></div>
-      </div>
-    </section>
-
-  </main>
+    </main>
+  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="app.js"></script>

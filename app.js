@@ -27,16 +27,34 @@ async function initAuth() {
 }
 
 function showAuthScreen() {
-  document.getElementById('auth-screen').classList.remove('hidden');
-  document.getElementById('tab-generator').classList.add('hidden');
-  document.getElementById('tab-saved').classList.add('hidden');
-  document.getElementById('app-nav').classList.add('hidden');
+  document.getElementById('landing').classList.remove('hidden');
+  document.getElementById('app').classList.add('hidden');
+  document.getElementById('auth-modal').classList.add('hidden');
 }
 
 function showApp() {
-  document.getElementById('auth-screen').classList.add('hidden');
-  document.getElementById('app-nav').classList.remove('hidden');
+  document.getElementById('landing').classList.add('hidden');
+  document.getElementById('auth-modal').classList.add('hidden');
+  document.getElementById('app').classList.remove('hidden');
   showTab('generator');
+}
+
+function openAuthModal(mode) {
+  document.getElementById('auth-modal').classList.remove('hidden');
+  document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('auth-login').classList.add('hidden');
+  document.getElementById('auth-signup').classList.add('hidden');
+  document.getElementById('auth-' + mode).classList.remove('hidden');
+  const tabs = document.querySelectorAll('.auth-tab');
+  tabs[mode === 'login' ? 0 : 1].classList.add('active');
+}
+
+function closeAuthModal() {
+  document.getElementById('auth-modal').classList.add('hidden');
+}
+
+function handleOverlayClick(event) {
+  if (event.target === document.getElementById('auth-modal')) closeAuthModal();
 }
 
 function switchAuth(mode, btn) {
