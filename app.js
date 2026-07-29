@@ -39,12 +39,12 @@ function showApp() {
   showTab('generator');
 }
 
-function switchAuth(mode) {
+function switchAuth(mode, btn) {
   document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
   document.getElementById('auth-login').classList.add('hidden');
   document.getElementById('auth-signup').classList.add('hidden');
-  document.getElementById(`auth-${mode}`).classList.remove('hidden');
-  document.querySelector(`.auth-tab[onclick="switchAuth('${mode}')"]`).classList.add('active');
+  document.getElementById('auth-' + mode).classList.remove('hidden');
+  if (btn) btn.classList.add('active');
 }
 
 async function logIn() {
