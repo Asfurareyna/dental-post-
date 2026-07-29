@@ -81,7 +81,8 @@ async function generateContent() {
 function displayResults(text) {
   document.getElementById('loading').classList.add('hidden');
 
-  const parts = text.split(/\*{0,2}Option \d+:\*{0,2}/i).filter(p => p.trim());
+  const cleaned = text.replace(/\*\*/g, '').replace(/^---$/gm, '').replace(/^\s*-{3,}\s*$/gm, '');
+  const parts = cleaned.split(/Option \d+:/i).filter(p => p.trim());
   const container = document.getElementById('captions-container');
   container.innerHTML = '';
 

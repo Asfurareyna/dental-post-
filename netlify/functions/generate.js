@@ -79,7 +79,8 @@ Rules:
 - Include 8-10 relevant hashtags
 - Label each one clearly as: Option 1: / Option 2: / Option 3:
 - Do not use the patient's name
-- Write in third person about the patient's experience`;
+- Write in third person about the patient's experience
+- Do not use markdown formatting — no **, no ---, plain text only`;
   }
 
   if (fields.type === 'educational') {
@@ -95,7 +96,8 @@ Rules:
 - Use simple language — avoid clinical jargon
 - End with a gentle call to action
 - Include 8-10 relevant hashtags
-- Label each one clearly as: Option 1: / Option 2: / Option 3:`;
+- Label each one clearly as: Option 1: / Option 2: / Option 3:
+- Do not use markdown formatting — no **, no ---, plain text only`;
   }
 
   if (fields.type === 'promotional') {
@@ -113,7 +115,8 @@ Rules:
 - Include a clear call to action (call, book online, DM us)
 - Include 8-10 relevant hashtags
 - Sound like a real dental office, not a sales ad
-- Label each one clearly as: Option 1: / Option 2: / Option 3:`;
+- Label each one clearly as: Option 1: / Option 2: / Option 3:
+- Do not use markdown formatting — no **, no ---, plain text only`;
   }
 
   if (fields.type === 'seasonal') {
@@ -129,6 +132,7 @@ Rules:
 - Be warm and human — this is community content, not a hard sell
 - Include a soft call to action where appropriate
 - Include 8-10 relevant hashtags including seasonal ones
-- Label each one clearly as: Option 1: / Option 2: / Option 3:`;
+- Label each one clearly as: Option 1: / Option 2: / Option 3:
+- Do not use markdown formatting — no **, no ---, plain text only`;
   }
 }
