@@ -1,13 +1,13 @@
 const SUPABASE_URL = 'https://rwtlbeusaevbeyjwamhm.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_Lz5Ab9QdSQiaRpFpDf4Bdg_Ig1kkoSe';
-const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let currentUser = null;
 
 // ─── AUTH ────────────────────────────────────────────────────────────────────
 
 async function initAuth() {
-  const { data: { session } } = await supabase.auth.getSession();
+  const { data: { session } } = await db.auth.getSession();
   if (session) {
     currentUser = session.user;
     showApp();
@@ -15,7 +15,7 @@ async function initAuth() {
     showAuthScreen();
   }
 
-  supabase.auth.onAuthStateChange((_event, session) => {
+  db.auth.onAuthStateChange((_event, session) => {
     if (session) {
       currentUser = session.user;
       showApp();
@@ -53,7 +53,7 @@ async function logIn() {
   const err = document.getElementById('login-error');
   err.classList.add('hidden');
 
-  const { error } = await supabase.auth.signInWithPassword({ email, password });
+  const { error } = await db.auth.signInWithPassword({ email, password });
   if (error) {
     err.textContent = error.message;
     err.classList.remove('hidden');
@@ -68,7 +68,7 @@ async function signUp() {
   err.classList.add('hidden');
   success.classList.add('hidden');
 
-  const { error } = await supabase.auth.signUp({ email, password });
+  const { error } = await db.auth.signUp({ email, password });
   if (error) {
     err.textContent = error.message;
     err.classList.remove('hidden');
@@ -78,7 +78,7 @@ async function signUp() {
 }
 
 async function signOut() {
-  await supabase.auth.signOut();
+  await db.auth.signOut();
 }
 
 // ─── NAVIGATION ───────────────────────────────────────────────────────────────
@@ -242,7 +242,7 @@ async function saveCaption(btn, caption, type, topic) {
   btn.textContent = 'Saving...';
   btn.disabled = true;
 
-  const { error } = await supabase.from('saved_content').insert({
+  const { error } = await db.from('saved_content').insert({
     user_id: currentUser.id,
     type,
     caption,
@@ -347,7 +347,7 @@ async function loadSavedContent() {
   const subtitle = document.getElementById('saved-subtitle');
   container.innerHTML = '<p style="color:#718096">Loading...</p>';
 
-  const { data, error } = await supabase
+  const { data, error } = await db
     .from('saved_content')
     .select('*')
     .order('created_at', { ascending: false });
@@ -408,7 +408,7 @@ function copySaved(btn, text) {
 
 async function deleteContent(id, btn) {
   btn.textContent = 'Deleting...';
-  const { error } = await supabase.from('saved_content').delete().eq('id', id);
+  const { error } = await db.from('saved_content').delete().eq('id', id);
   if (!error) {
     btn.closest('.saved-card').remove();
     const remaining = document.querySelectorAll('.saved-card').length;
