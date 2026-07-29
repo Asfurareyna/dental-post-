@@ -25,6 +25,7 @@
           <option value="educational">Educational Post</option>
           <option value="promotional">Promotional Post</option>
           <option value="seasonal">Seasonal Content</option>
+          <option value="video">Educational Video (AI Avatar)</option>
         </select>
       </div>
 
@@ -170,6 +171,43 @@
         </div>
       </div>
 
+      <!-- Video -->
+      <div id="fields-video" class="field-group hidden">
+        <div class="form-group">
+          <label for="video-topic">Procedure or Topic</label>
+          <select id="video-topic">
+            <option value="">— Select —</option>
+            <option>Dental Implants</option>
+            <option>Teeth Whitening</option>
+            <option>Invisalign</option>
+            <option>Root Canal</option>
+            <option>Veneers</option>
+            <option>Dental Crowns</option>
+            <option>Gum Disease Treatment</option>
+            <option>Children's Dental Care</option>
+            <option>Dental Cleaning</option>
+            <option>Tooth Extraction</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="video-duration">Video Length</label>
+          <select id="video-duration">
+            <option value="30s">30 seconds</option>
+            <option value="60s">60 seconds</option>
+            <option value="2min">2 minutes</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="video-tone">Tone</label>
+          <select id="video-tone">
+            <option>Professional &amp; Reassuring</option>
+            <option>Friendly &amp; Approachable</option>
+            <option>Educational &amp; Informative</option>
+          </select>
+        </div>
+        <p class="video-note">Your video will be created with an AI presenter. This takes about 2 minutes to process.</p>
+      </div>
+
       <button id="generate-btn" class="hidden" onclick="generateContent()">
         Generate Captions
       </button>
@@ -181,6 +219,24 @@
       <p class="subtitle">Click any caption to copy it.</p>
       <div id="captions-container"></div>
       <button class="secondary" onclick="resetForm()">Generate Again</button>
+    </section>
+
+    <!-- Video Results -->
+    <section id="video-results" class="hidden">
+      <h2>Your Educational Video</h2>
+      <div id="video-status-box">
+        <div class="spinner"></div>
+        <p id="video-status-text">Creating your video... this takes about 2 minutes.</p>
+      </div>
+      <div id="video-script-box" class="hidden">
+        <h3>Generated Script</h3>
+        <p id="video-script-text"></p>
+      </div>
+      <div id="video-player-box" class="hidden">
+        <video id="video-player" controls style="width:100%;border-radius:10px;"></video>
+        <a id="video-download" href="#" download class="download-btn">Download Video</a>
+      </div>
+      <button class="secondary" onclick="resetForm()">Create Another</button>
     </section>
 
     <div id="loading" class="hidden">

@@ -225,6 +225,80 @@ button.secondary:hover {
   font-size: 0.95rem;
 }
 
+.video-note {
+  font-size: 0.82rem;
+  color: #718096;
+  background: #f7f9ff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 0.7rem 1rem;
+  margin-top: 0.5rem;
+}
+
+#video-results {
+  background: white;
+  border-radius: 12px;
+  padding: 2rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+
+#video-results h2 {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+#video-results h3 {
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #4a5568;
+  margin-bottom: 0.6rem;
+}
+
+#video-status-box {
+  text-align: center;
+  padding: 2rem 0;
+}
+
+#video-status-box p {
+  color: #718096;
+  font-size: 0.95rem;
+  margin-top: 1rem;
+}
+
+#video-script-box {
+  background: #f7f9ff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 1.2rem;
+  margin-bottom: 1.5rem;
+}
+
+#video-script-text {
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: #2d3748;
+}
+
+.download-btn {
+  display: block;
+  text-align: center;
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background: #38a169;
+  color: white;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.download-btn:hover {
+  background: #2f855a;
+}
+
 @media (max-width: 600px) {
   main {
     margin: 1.5rem auto;

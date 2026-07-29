@@ -16,6 +16,15 @@ function showFields() {
 function getFields() {
   const type = document.getElementById('content-type').value;
 
+  if (type === 'video') {
+    return {
+      type,
+      topic: document.getElementById('video-topic').value,
+      duration: document.getElementById('video-duration').value,
+      tone: document.getElementById('video-tone').value,
+    };
+  }
+
   if (type === 'before-after') {
     return {
       type,
@@ -56,6 +65,13 @@ async function generateContent() {
 
   document.querySelector('.card').classList.add('hidden');
   document.getElementById('results').classList.add('hidden');
+  document.getElementById('video-results').classList.add('hidden');
+
+  if (fields.type === 'video') {
+    await generateVideo(fields);
+    return;
+  }
+
   document.getElementById('loading').classList.remove('hidden');
 
   try {
@@ -76,6 +92,75 @@ async function generateContent() {
     alert('Something went wrong. Please try again.');
     resetForm();
   }
+}
+
+async function generateVideo(fields) {
+  document.getElementById('video-results').classList.remove('hidden');
+  document.getElementById('video-status-box').classList.remove('hidden');
+  document.getElementById('video-script-box').classList.add('hidden');
+  document.getElementById('video-player-box').classList.add('hidden');
+  document.getElementById('video-status-text').textContent = 'Writing your script and submitting to HeyGen...';
+
+  try {
+    const response = await fetch('/.netlify/functions/generate-video', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(fields),
+    });
+
+    const data = await response.json();
+    if (data.error) {
+      alert('Error: ' + data.error);
+      resetForm();
+      return;
+    }
+
+    document.getElementById('video-script-text').textContent = data.script;
+    document.getElementById('video-script-box').classList.remove('hidden');
+    document.getElementById('video-status-text').textContent = 'Video is processing... checking every 15 seconds.';
+
+    pollVideoStatus(data.video_id);
+  } catch (err) {
+    alert('Something went wrong generating your video. Please try again.');
+    resetForm();
+  }
+}
+
+async function pollVideoStatus(videoId) {
+  const maxAttempts = 24;
+  let attempts = 0;
+
+  const interval = setInterval(async () => {
+    attempts++;
+    try {
+      const res = await fetch(`/.netlify/functions/check-video?video_id=${videoId}`);
+      const data = await res.json();
+      const status = data.data && data.data.status;
+
+      if (status === 'completed') {
+        clearInterval(interval);
+        const videoUrl = data.data.video_url;
+        document.getElementById('video-status-box').classList.add('hidden');
+        document.getElementById('video-player').src = videoUrl;
+        document.getElementById('video-download').href = videoUrl;
+        document.getElementById('video-player-box').classList.remove('hidden');
+      } else if (status === 'failed') {
+        clearInterval(interval);
+        alert('Video generation failed. Please try again.');
+        resetForm();
+      } else if (attempts >= maxAttempts) {
+        clearInterval(interval);
+        document.getElementById('video-status-text').textContent = 'Taking longer than expected. Check back in your HeyGen dashboard.';
+      } else {
+        const mins = Math.floor((attempts * 15) / 60);
+        const secs = (attempts * 15) % 60;
+        document.getElementById('video-status-text').textContent = `Still processing... (${mins}m ${secs}s elapsed)`;
+      }
+    } catch (err) {
+      clearInterval(interval);
+      alert('Could not check video status. Please try again.');
+    }
+  }, 15000);
 }
 
 function displayResults(text) {
@@ -114,6 +199,7 @@ function copyCaption(card, text) {
 
 function resetForm() {
   document.getElementById('results').classList.add('hidden');
+  document.getElementById('video-results').classList.add('hidden');
   document.getElementById('loading').classList.add('hidden');
   document.querySelector('.card').classList.remove('hidden');
   document.getElementById('content-type').value = '';
