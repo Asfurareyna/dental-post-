@@ -234,9 +234,15 @@ function displayResults(text, type, topic) {
         <span class="copy-hint">Click to copy</span>
         <button class="save-btn" onclick="saveCaption(this, ${JSON.stringify(trimmed)}, ${JSON.stringify(type)}, ${JSON.stringify(topic)})">Save</button>
       </div>
+      <div class="share-actions">
+        <span class="share-label">Copy &amp; open:</span>
+        <button class="share-btn share-ig" onclick="openPlatform(this, ${JSON.stringify(trimmed)}, 'instagram')">Instagram</button>
+        <button class="share-btn share-fb" onclick="openPlatform(this, ${JSON.stringify(trimmed)}, 'facebook')">Facebook</button>
+      </div>
     `;
     card.addEventListener('click', (e) => {
       if (e.target.classList.contains('save-btn')) return;
+      if (e.target.classList.contains('share-btn')) return;
       copyCaption(card, trimmed);
     });
     container.appendChild(card);
@@ -253,6 +259,23 @@ function copyCaption(card, text) {
       card.classList.remove('copied');
       card.querySelector('.copy-hint').textContent = 'Click to copy';
     }, 2000);
+  });
+}
+
+function openPlatform(btn, text, platform) {
+  const urls = {
+    instagram: 'https://www.instagram.com/create/style/',
+    facebook:  'https://www.facebook.com/',
+  };
+  navigator.clipboard.writeText(text).then(() => {
+    const original = btn.textContent;
+    btn.textContent = 'Copied! Opening...';
+    btn.disabled = true;
+    setTimeout(() => {
+      window.open(urls[platform], '_blank');
+      btn.textContent = original;
+      btn.disabled = false;
+    }, 600);
   });
 }
 
