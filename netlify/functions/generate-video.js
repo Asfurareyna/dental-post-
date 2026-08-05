@@ -47,12 +47,30 @@ async function getFirstAvatarId(apiKey) {
   return avatars[0].avatar_id;
 }
 
-async function generateScript(topic, duration, tone, apiKey) {
+const TOPIC_IMAGES = {
+  'Dental Implants':        'https://images.pexels.com/photos/3881449/pexels-photo-3881449.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&dpr=1',
+  'Teeth Whitening':        'https://images.pexels.com/photos/3779709/pexels-photo-3779709.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&dpr=1',
+  'Invisalign':             'https://images.pexels.com/photos/4269694/pexels-photo-4269694.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&dpr=1',
+  'Root Canal':             'https://images.pexels.com/photos/6812572/pexels-photo-6812572.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&dpr=1',
+  'Veneers':                'https://images.pexels.com/photos/3779706/pexels-photo-3779706.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&dpr=1',
+  'Dental Crowns':          'https://images.pexels.com/photos/3881449/pexels-photo-3881449.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&dpr=1',
+  'Gum Disease Treatment':  'https://images.pexels.com/photos/4269694/pexels-photo-4269694.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&dpr=1',
+  "Children's Dental Care": 'https://images.pexels.com/photos/5355503/pexels-photo-5355503.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&dpr=1',
+  'Dental Cleaning':        'https://images.pexels.com/photos/3881449/pexels-photo-3881449.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&dpr=1',
+  'Tooth Extraction':       'https://images.pexels.com/photos/6812572/pexels-photo-6812572.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&dpr=1',
+};
+const DEFAULT_IMAGE = 'https://images.pexels.com/photos/3881449/pexels-photo-3881449.jpeg?auto=compress&cs=tinysrgb&w=1280&h=720&dpr=1';
+
+async function generateScript(topic, duration, tone, language) {
   const wordCount = duration === '30s' ? '60-75 words' : duration === '60s' ? '130-150 words' : '260-300 words';
+  const langNote = language === 'es'
+    ? 'Write the entire script in Spanish (Latin American Spanish).'
+    : 'Write the script in English.';
 
   const prompt = `Write a professional educational video script for a dental office about: ${topic}
 Duration: ${duration} (approximately ${wordCount})
 Tone: ${tone}
+${langNote}
 
 Write ONLY the spoken narration — no stage directions, no formatting, no bullet points, no markdown.
 Plain conversational sentences only, as if a friendly dentist is speaking directly to a patient.
@@ -80,17 +98,31 @@ End with a gentle call to action to schedule a consultation.`;
   return data.choices[0].message.content.trim();
 }
 
-async function submitToHeyGen(script, avatarId, voiceId, apiKey) {
-  const payload = JSON.stringify({
-    type: 'avatar',
-    avatar_id: avatarId,
-    script: script,
-    voice_id: voiceId,
-    background: { type: 'color', value: '#f0f4f8' },
-    aspect_ratio: '16:9',
-    output_format: 'mp4',
-    engine: { type: 'avatar_iii' },
-  });
+async function submitToHeyGen(script, avatarId, voiceId, apiKey, topic, style) {
+  let body;
+  if (style === 'image') {
+    const imageUrl = TOPIC_IMAGES[topic] || DEFAULT_IMAGE;
+    body = {
+      type: 'image',
+      image_url: imageUrl,
+      script: script,
+      voice_id: voiceId,
+      aspect_ratio: '16:9',
+      output_format: 'mp4',
+    };
+  } else {
+    body = {
+      type: 'avatar',
+      avatar_id: avatarId,
+      script: script,
+      voice_id: voiceId,
+      background: { type: 'color', value: '#f0f4f8' },
+      aspect_ratio: '16:9',
+      output_format: 'mp4',
+      engine: { type: 'avatar_iii' },
+    };
+  }
+  const payload = JSON.stringify(body);
 
   const options = {
     hostname: 'api.heygen.com',
@@ -118,15 +150,15 @@ exports.handler = async function (event) {
   if (!openaiKey) return { statusCode: 500, body: JSON.stringify({ error: 'OPENAI_API_KEY is not configured.' }) };
   if (!apiKey) return { statusCode: 500, body: JSON.stringify({ error: 'HEYGEN_API_KEY is not configured in Netlify.' }) };
 
-  const { topic, duration, tone, voiceId: providedVoiceId } = JSON.parse(event.body);
+  const { topic, duration, tone, voiceId: providedVoiceId, language = 'en', style = 'avatar' } = JSON.parse(event.body);
 
   const [script, voiceId, avatarId] = await Promise.all([
-    generateScript(topic, duration, tone),
+    generateScript(topic, duration, tone, language),
     providedVoiceId ? Promise.resolve(providedVoiceId) : getFirstVoiceId(apiKey),
-    getFirstAvatarId(apiKey),
+    style === 'image' ? Promise.resolve(null) : getFirstAvatarId(apiKey),
   ]);
 
-  const result = await submitToHeyGen(script, avatarId, voiceId, apiKey);
+  const result = await submitToHeyGen(script, avatarId, voiceId, apiKey, topic, style);
 
   const videoId = result.data && result.data.video_id;
   if (!videoId) {

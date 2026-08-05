@@ -146,6 +146,8 @@ function getFields() {
       duration: document.getElementById('video-duration').value,
       tone: document.getElementById('video-tone').value,
       voiceId: document.getElementById('video-voice').value,
+      language: document.getElementById('video-language').value,
+      style: document.getElementById('video-style').value,
     };
   }
   if (type === 'before-after') {
@@ -315,6 +317,8 @@ function resetForm() {
 
 // ─── VIDEO ────────────────────────────────────────────────────────────────────
 
+let allVoices = [];
+
 async function loadVoices() {
   const select = document.getElementById('video-voice');
   select.innerHTML = '<option value="">Loading voices...</option>';
@@ -325,17 +329,36 @@ async function loadVoices() {
       select.innerHTML = '<option value="">No voices found</option>';
       return;
     }
-    select.innerHTML = '';
-    data.voices.forEach(v => {
-      const label = [v.name, v.gender, v.locale].filter(Boolean).join(' · ');
-      const opt = document.createElement('option');
-      opt.value = v.voice_id;
-      opt.textContent = label;
-      select.appendChild(opt);
-    });
+    allVoices = data.voices;
+    filterVoices();
   } catch (e) {
     select.innerHTML = '<option value="">Could not load voices</option>';
   }
+}
+
+function filterVoices() {
+  const lang = document.getElementById('video-language').value;
+  const select = document.getElementById('video-voice');
+  const filtered = allVoices.filter(v => {
+    if (lang === 'es') return v.language === 'Spanish' || (v.locale && v.locale.startsWith('es'));
+    return v.language === 'English' || (v.locale && v.locale.startsWith('en'));
+  });
+  if (filtered.length === 0) {
+    select.innerHTML = '<option value="">No voices available for this language</option>';
+    return;
+  }
+  select.innerHTML = '';
+  filtered.forEach(v => {
+    const label = [v.name, v.gender, v.locale].filter(Boolean).join(' · ');
+    const opt = document.createElement('option');
+    opt.value = v.voice_id;
+    opt.textContent = label;
+    select.appendChild(opt);
+  });
+}
+
+function onLanguageChange() {
+  if (allVoices.length > 0) filterVoices();
 }
 
 function checkForPendingVideo() {

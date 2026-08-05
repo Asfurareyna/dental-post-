@@ -322,6 +322,20 @@
 
           <div id="fields-video" class="field-group hidden">
             <div class="form-group">
+              <label for="video-language">Language</label>
+              <select id="video-language" onchange="onLanguageChange()">
+                <option value="en">English</option>
+                <option value="es">Spanish</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="video-style">Video Style</label>
+              <select id="video-style">
+                <option value="avatar">AI Presenter</option>
+                <option value="image">Procedure Images</option>
+              </select>
+            </div>
+            <div class="form-group">
               <label for="video-topic">Procedure or Topic</label>
               <select id="video-topic">
                 <option value="">— Select —</option>
