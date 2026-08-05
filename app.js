@@ -37,6 +37,7 @@ function showApp() {
   document.getElementById('auth-modal').classList.add('hidden');
   document.getElementById('app').classList.remove('hidden');
   showTab('generator');
+  checkForPendingVideo();
 }
 
 function openAuthModal(mode) {
@@ -300,6 +301,7 @@ async function saveCaption(btn, caption, type, topic) {
 }
 
 function resetForm() {
+  localStorage.removeItem('pending_video');
   document.getElementById('results').classList.add('hidden');
   document.getElementById('video-results').classList.add('hidden');
   document.getElementById('loading').classList.add('hidden');
@@ -310,6 +312,28 @@ function resetForm() {
 }
 
 // ─── VIDEO ────────────────────────────────────────────────────────────────────
+
+function checkForPendingVideo() {
+  const pending = localStorage.getItem('pending_video');
+  if (!pending) return;
+  try {
+    const { video_id, script } = JSON.parse(pending);
+    if (!video_id) return;
+    document.querySelector('.card').classList.add('hidden');
+    document.getElementById('results').classList.add('hidden');
+    document.getElementById('video-results').classList.remove('hidden');
+    document.getElementById('video-status-box').classList.remove('hidden');
+    document.getElementById('video-player-box').classList.add('hidden');
+    if (script) {
+      document.getElementById('video-script-text').textContent = script;
+      document.getElementById('video-script-box').classList.remove('hidden');
+    }
+    document.getElementById('video-status-text').textContent = 'Resuming... checking video status.';
+    pollVideoStatus(video_id);
+  } catch (e) {
+    localStorage.removeItem('pending_video');
+  }
+}
 
 async function generateVideo(fields) {
   document.getElementById('video-results').classList.remove('hidden');
@@ -337,6 +361,7 @@ async function generateVideo(fields) {
     document.getElementById('video-script-box').classList.remove('hidden');
     document.getElementById('video-status-text').textContent = 'Video is processing... checking every 15 seconds.';
 
+    localStorage.setItem('pending_video', JSON.stringify({ video_id: data.video_id, script: scriptText }));
     pollVideoStatus(data.video_id);
   } catch (err) {
     alert('Something went wrong generating your video. Please try again.');
@@ -345,7 +370,7 @@ async function generateVideo(fields) {
 }
 
 async function pollVideoStatus(videoId) {
-  const maxAttempts = 24;
+  const maxAttempts = 60;
   let attempts = 0;
 
   const interval = setInterval(async () => {
@@ -357,6 +382,7 @@ async function pollVideoStatus(videoId) {
 
       if (status === 'completed') {
         clearInterval(interval);
+        localStorage.removeItem('pending_video');
         const videoUrl = data.data.video_url;
         document.getElementById('video-status-box').classList.add('hidden');
         document.getElementById('video-player').src = videoUrl;
@@ -364,10 +390,12 @@ async function pollVideoStatus(videoId) {
         document.getElementById('video-player-box').classList.remove('hidden');
       } else if (status === 'failed') {
         clearInterval(interval);
+        localStorage.removeItem('pending_video');
         alert('Video generation failed. Please try again.');
         resetForm();
       } else if (attempts >= maxAttempts) {
         clearInterval(interval);
+        localStorage.removeItem('pending_video');
         document.getElementById('video-status-text').textContent = 'Taking longer than expected. Check your HeyGen dashboard.';
       } else {
         const mins = Math.floor((attempts * 15) / 60);
@@ -376,6 +404,7 @@ async function pollVideoStatus(videoId) {
       }
     } catch (err) {
       clearInterval(interval);
+      localStorage.removeItem('pending_video');
       alert('Could not check video status. Please try again.');
     }
   }, 15000);
