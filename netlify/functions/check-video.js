@@ -10,7 +10,7 @@ exports.handler = async function (event) {
   return new Promise((resolve) => {
     const options = {
       hostname: 'api.heygen.com',
-      path: `/v1/video_status.get?video_id=${videoId}`,
+      path: `/v3/videos/${videoId}`,
       method: 'GET',
       headers: {
         'X-Api-Key': process.env.HEYGEN_API_KEY,

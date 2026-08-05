@@ -82,23 +82,13 @@ End with a gentle call to action to schedule a consultation.`;
 
 async function submitToHeyGen(script, avatarId, voiceId, apiKey) {
   const payload = JSON.stringify({
-    video_inputs: [{
-      character: {
-        type: 'avatar',
-        avatar_id: avatarId,
-      },
-      voice: {
-        type: 'text',
-        input_text: script,
-        voice_id: voiceId,
-      },
-      background: {
-        type: 'color',
-        value: '#f0f4f8',
-      },
-    }],
-    dimension: { width: 1280, height: 720 },
-    test: false,
+    type: 'avatar',
+    avatar_id: avatarId,
+    script: script,
+    voice_id: voiceId,
+    background: { value: '#f0f4f8' },
+    aspect_ratio: '16:9',
+    output_format: 'mp4',
   });
 
   const options = {
