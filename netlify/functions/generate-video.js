@@ -86,13 +86,11 @@ async function submitToHeyGen(script, avatarId, voiceId, apiKey) {
       character: {
         type: 'avatar',
         avatar_id: avatarId,
-        avatar_style: 'normal',
       },
       voice: {
         type: 'text',
         input_text: script,
         voice_id: voiceId,
-        speed: 1.0,
       },
       background: {
         type: 'color',
@@ -100,6 +98,7 @@ async function submitToHeyGen(script, avatarId, voiceId, apiKey) {
       },
     }],
     dimension: { width: 1280, height: 720 },
+    test: false,
   });
 
   const options = {
