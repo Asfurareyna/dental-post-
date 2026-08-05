@@ -104,7 +104,7 @@ async function submitToHeyGen(script, avatarId, voiceId, apiKey, topic, style) {
     const imageUrl = TOPIC_IMAGES[topic] || DEFAULT_IMAGE;
     body = {
       type: 'image',
-      image_url: imageUrl,
+      image: { url: imageUrl },
       script: script,
       voice_id: voiceId,
       aspect_ratio: '16:9',
