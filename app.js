@@ -130,6 +130,7 @@ function showFields() {
     document.getElementById('fields-' + type).classList.remove('hidden');
     btn.classList.remove('hidden');
     btn.textContent = type === 'video' ? 'Generate Video' : 'Generate Captions';
+    if (type === 'video') loadVoices();
   } else {
     btn.classList.add('hidden');
   }
@@ -144,6 +145,7 @@ function getFields() {
       topic: document.getElementById('video-topic').value,
       duration: document.getElementById('video-duration').value,
       tone: document.getElementById('video-tone').value,
+      voiceId: document.getElementById('video-voice').value,
     };
   }
   if (type === 'before-after') {
@@ -312,6 +314,29 @@ function resetForm() {
 }
 
 // ─── VIDEO ────────────────────────────────────────────────────────────────────
+
+async function loadVoices() {
+  const select = document.getElementById('video-voice');
+  select.innerHTML = '<option value="">Loading voices...</option>';
+  try {
+    const res = await fetch('/.netlify/functions/get-voices');
+    const data = await res.json();
+    if (!data.voices || data.voices.length === 0) {
+      select.innerHTML = '<option value="">No voices found</option>';
+      return;
+    }
+    select.innerHTML = '';
+    data.voices.forEach(v => {
+      const label = [v.name, v.gender, v.locale].filter(Boolean).join(' · ');
+      const opt = document.createElement('option');
+      opt.value = v.voice_id;
+      opt.textContent = label;
+      select.appendChild(opt);
+    });
+  } catch (e) {
+    select.innerHTML = '<option value="">Could not load voices</option>';
+  }
+}
 
 function checkForPendingVideo() {
   const pending = localStorage.getItem('pending_video');

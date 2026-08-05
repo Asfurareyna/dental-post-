@@ -118,11 +118,11 @@ exports.handler = async function (event) {
   if (!openaiKey) return { statusCode: 500, body: JSON.stringify({ error: 'OPENAI_API_KEY is not configured.' }) };
   if (!apiKey) return { statusCode: 500, body: JSON.stringify({ error: 'HEYGEN_API_KEY is not configured in Netlify.' }) };
 
-  const { topic, duration, tone } = JSON.parse(event.body);
+  const { topic, duration, tone, voiceId: providedVoiceId } = JSON.parse(event.body);
 
   const [script, voiceId, avatarId] = await Promise.all([
     generateScript(topic, duration, tone),
-    getFirstVoiceId(apiKey),
+    providedVoiceId ? Promise.resolve(providedVoiceId) : getFirstVoiceId(apiKey),
     getFirstAvatarId(apiKey),
   ]);
 
