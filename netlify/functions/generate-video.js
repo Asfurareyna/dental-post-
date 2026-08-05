@@ -86,7 +86,7 @@ async function submitToHeyGen(script, avatarId, voiceId, apiKey) {
     avatar_id: avatarId,
     script: script,
     voice_id: voiceId,
-    background: { value: '#f0f4f8' },
+    background: { type: 'color', value: '#f0f4f8' },
     aspect_ratio: '16:9',
     output_format: 'mp4',
   });
